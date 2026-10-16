@@ -2404,7 +2404,7 @@ te:{chip:'ముందుగా పేమెంట్',warn:'ముందుగ�
 function q(k){var u='en';try{u=localStorage.getItem('svps.ui')||'en'}catch(e){}return (X[u]||X.en)[k]}
 var UPIL='upi://pay?pa=9177226638-3@ybl&pn=Dappu%20Srinivas&am=1000.00&cu=INR&tn=SV%20PRIME%20EDITS%20PROMO';var UPIQ=qrDataUrl(UPIL);
 window.SVPAY={bar:function(){return '<div class="ratebar"><b>'+q('bar')+'</b><small>'+q('barS')+'</small></div>'},
-box:function(tp,nm){var msg='SV PRIME EDITS promo video order\nTemplate: '+tp.id+' - '+tp.name+'\nRate: Rs.1,000\nI have paid. Payment screenshot attached.';
+box:function(tp,nm){var msg='SV PRIME EDITS promo video order\nTemplate: '+tp.id+' - '+tp.name+'\nRate: Rs.1,000\nI have paid. Payment screenshot attached.'+'\nOpen this exact template: https://svofficials9999-collab.github.io/SV-PRIME-EDITS/promo-studio.html#/t/'+tp.id;
  var wa='https://wa.me/919177226638?text='+encodeURIComponent(msg);
  return '<div class="paybox" id="paybox"><span class="pchip">'+q('chip')+'</span><p class="pwarn">'+q('warn')+'</p><div class="pamt"><div><small>'+q('tpl')+'</small><strong>'+nm+' ('+tp.id+')</strong></div><div class="r"><small>'+q('amt')+'</small><strong>'+q('from')+'</strong></div></div><p class="pnote">'+q('note')+'</p><div class="pamt"><div><small>Pay exactly</small><strong>Rs.1,000</strong></div></div><img src="'+UPIQ+'" alt="UPI payment QR - Rs.1,000 locked" width="300" height="300"><a class="upi" href="'+UPIL+'">'+q('app')+'</a><ol><li>'+q('s1')+'</li><li>'+q('s2')+'</li><li>'+q('s3')+'</li></ol><a class="paid" target="_blank" rel="noopener noreferrer" href="'+wa+'">'+q('paid')+'</a></div>'}};
 })();
@@ -2580,7 +2580,7 @@ function renderEditor(id){var tp=TPLBY[id];if(!tp){location.hash='#/';return}sto
   $('#fv').onchange=function(e){var f=e.target.files[0];if(!f)return;if(!/^video\//.test(f.type)){msg('Unsupported file');return}var v=document.createElement('video');v.muted=true;v.loop=true;v.playsInline=true;v.src=URL.createObjectURL(f);v.onloadeddata=function(){P.media.video=v;draw()};v.onerror=function(){msg('Could not read this video')}};
   $('#fa').onchange=function(e){var f=e.target.files[0];if(!f)return;if(!/^audio\//.test(f.type)){msg('Unsupported file');return}setAudio(URL.createObjectURL(f))};
   $('#rec').onclick=toggleRec;$('#ex').onclick=doExport;
-  $('#ord').href='https://wa.me/919177226638?text='+encodeURIComponent('SV PRIME EDITS - Promo video template: '+tp.name+' ('+tp.id+') / '+c.en);
+  $('#ord').href='https://wa.me/919177226638?text='+encodeURIComponent('SV PRIME EDITS - Promo video template: '+tp.name+' ('+tp.id+') / '+c.en+'\nOpen this exact template: https://svofficials9999-collab.github.io/SV-PRIME-EDITS/promo-studio.html#/t/'+tp.id);
   renderScenes();fit();draw()}
 function msg(s){var m=$('#mst');if(m)m.textContent=s}
 function loadImgs(files,cb){var out=[],n=files.length,k=0;if(!n){cb([]);return}Array.prototype.forEach.call(files,function(f){if(!/^image\//.test(f.type)){msg('Unsupported file: '+f.name);if(++k===n)cb(out);return}var im=new Image();im.onload=function(){out.push(im);if(++k===n)cb(out)};im.onerror=function(){msg('Could not read '+f.name);if(++k===n)cb(out)};im.src=URL.createObjectURL(f)})}
