@@ -9,6 +9,7 @@
 <link rel="apple-touch-icon" href="upi-qr-icon-180.png">
 <style>body{margin:0;padding:12px;min-height:100vh;background:linear-gradient(135deg,#1a0b2e 0%,#5b13a8 40%,#ff3d71 78%,#ffb300 100%);background-attachment:fixed}</style></head>
 <body>
+<div id="uq-lock" style="position:fixed;inset:0;z-index:99999;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#1a0b2e 0%,#5b13a8 40%,#ff3d71 78%,#ffb300 100%);font-family:system-ui,-apple-system,sans-serif"></div>
 <div id="app"></div>
 <script>/**
  * Minified by jsDelivr using Terser v5.37.0.
@@ -144,14 +145,15 @@ return{mount:mount,buildLink:buildLink,STR:STR};
 })();
 
 </script>
+<script src="upi-qr-lock.js"></script>
 <script>
-UPIQR.mount(document.getElementById('app'),{
+UPIQRLock.init(function(){UPIQR.mount(document.getElementById('app'),{
  vpas:[{vpa:'9177226638-3@ybl',label:'9177226638-3@ybl (PhonePe)'}],
  name:'Dappu Srinivas',
  lang:'en',
  langToggle:true,
  allowAdd:true
-});
+})});
 if('serviceWorker' in navigator){navigator.serviceWorker.register('upi-qr-sw.js',{scope:'./upi-qr.html',updateViaCache:'none'}).catch(function(){});navigator.serviceWorker.getRegistrations().then(function(rs){rs.forEach(function(r){if(!/upi-qr\.html$/.test(r.scope)&&/upi-qr/.test(r.scope))r.unregister()})})}
 </script>
 </body></html>
