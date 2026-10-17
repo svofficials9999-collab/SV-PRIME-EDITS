@@ -3,7 +3,7 @@
   "name": "UPI QR",
   "short_name": "UPI QR",
   "start_url": "./upi-qr.html",
-  "scope": "./upi-qr.html",
+  "scope": "./",
   "display": "standalone",
   "background_color": "#2a0a4a",
   "theme_color": "#7c1dff",
