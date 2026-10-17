@@ -1,5 +1,5 @@
 'use strict';
-const CACHE='upiqr-v5-lock';
+const CACHE='upiqr-v5b-lock';
 const FILES=['./upi-qr.html','./upi-qr.webmanifest','./upi-qr-icon.svg','./upi-qr-icon-180.png','./upi-qr-icon-192.png','./upi-qr-icon-512.png','./upi-qr-icon-maskable-192.png','./upi-qr-icon-maskable-512.png','./upi-qr-lock.js'];
 self.addEventListener('install',e=>{e.waitUntil(caches.open(CACHE).then(c=>c.addAll(FILES)).then(()=>self.skipWaiting()));});
 self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k.startsWith('upiqr-')&&k!==CACHE).map(k=>caches.delete(k)))).then(()=>self.clients.claim()));});
