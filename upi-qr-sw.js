@@ -1,6 +1,6 @@
 'use strict';
-const CACHE='upiqr-v4-startup';
-const FILES=['./upi-qr.html','./upi-qr.webmanifest','./upi-qr-icon.svg','./upi-qr-icon-180.png','./upi-qr-icon-192.png','./upi-qr-icon-512.png','./upi-qr-icon-maskable-192.png','./upi-qr-icon-maskable-512.png'];
+const CACHE='upiqr-v5-lock';
+const FILES=['./upi-qr.html','./upi-qr.webmanifest','./upi-qr-icon.svg','./upi-qr-icon-180.png','./upi-qr-icon-192.png','./upi-qr-icon-512.png','./upi-qr-icon-maskable-192.png','./upi-qr-icon-maskable-512.png','./upi-qr-lock.js'];
 self.addEventListener('install',e=>{e.waitUntil(caches.open(CACHE).then(c=>c.addAll(FILES)).then(()=>self.skipWaiting()));});
 self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k.startsWith('upiqr-')&&k!==CACHE).map(k=>caches.delete(k)))).then(()=>self.clients.claim()));});
 self.addEventListener('fetch',e=>{const u=new URL(e.request.url);if(e.request.method!=='GET'||u.origin!==self.location.origin||!FILES.some(f=>new URL(f,self.location.href).pathname===u.pathname))return;boundedStartup(e,fetch(e.request,{cache:'reload'}).then(r=>{if(r.ok){const clone=r.clone();caches.open(CACHE).then(c=>c.put(e.request,clone));}return r;}).catch(()=>caches.match(e.request,{ignoreSearch:true})));});
