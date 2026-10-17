@@ -1,10 +1,16 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>UPI Fixed-Amount QR</title>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>UPI QR</title>
 <meta name="robots" content="noindex,nofollow">
-<style>body{margin:0;background:#e9e4d6;padding:12px}</style></head>
+<meta name="theme-color" content="#7c1dff">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="manifest" href="upi-qr.webmanifest">
+<link rel="icon" type="image/png" sizes="192x192" href="upi-qr-icon-192.png">
+<link rel="apple-touch-icon" href="upi-qr-icon-180.png">
+<style>body{margin:0;padding:12px;min-height:100vh;background:linear-gradient(135deg,#1a0b2e 0%,#5b13a8 40%,#ff3d71 78%,#ffb300 100%);background-attachment:fixed}</style></head>
 <body>
 <div id="app"></div>
-<script>
-/**
+<script>/**
  * Minified by jsDelivr using Terser v5.37.0.
  * Original file: /npm/qrcode-generator@1.4.4/qrcode.js
  *
@@ -59,34 +65,34 @@ function mount(el,opts){
   var o2=el.querySelector('#uq-tn');if(o2)curTn=o2.value;
   var o3=el.querySelector('#uq-name');if(o3)curNm=o3.value;
   el.innerHTML='';
-  el.style.cssText='font-family:system-ui,-apple-system,sans-serif;max-width:480px;margin:0 auto;padding:14px;background:#f6f1e3;color:#222;border-radius:12px';
+  el.style.cssText='font-family:system-ui,-apple-system,sans-serif;max-width:480px;margin:0 auto;padding:14px;background:linear-gradient(165deg,#2a0a4a 0%,#4a0f6e 55%,#7c1dff 100%);color:#fff;box-shadow:0 8px 30px rgba(0,0,0,.45);border-radius:12px';
   var h='<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">'
    +'<b style="font-size:18px">'+esc(s.title)+'</b>'
-   +(opts.langToggle?'<button id="uq-lang" style="border:1px solid #999;background:#fff;border-radius:8px;padding:4px 10px">'+(lang==='en'?'తెలుగు':'English')+'</button>':'')
+   +(opts.langToggle?'<button id="uq-lang" style="border:1px solid rgba(255,255,255,.55);background:rgba(255,255,255,.16);color:#fff;border-radius:8px;padding:4px 10px;font-weight:700">'+(lang==='en'?'తెలుగు':'English')+'</button>':'')
    +'</div>';
   h+='<label style="font-size:13px;font-weight:600">'+esc(s.vpa)+'</label><div id="uq-chips" style="display:flex;flex-wrap:wrap;gap:6px;margin:6px 0">';
   vpas.forEach(function(x,i){
-   h+='<button data-i="'+i+'" class="uq-chip" style="border:2px solid '+(x.vpa===sel?'#1faa55':'#bbb')+';background:'+(x.vpa===sel?'#e7f7ee':'#fff')+';border-radius:999px;padding:6px 10px;font-size:13px">'+esc(x.label)+(x.builtin?'':' <span data-del="'+i+'" style="color:#a33;font-weight:700">x</span>')+'</button>';
+   h+='<button data-i="'+i+'" class="uq-chip" style="border:2px solid '+(x.vpa===sel?'#ffd54a':'rgba(255,255,255,.45)')+';background:'+(x.vpa===sel?'linear-gradient(180deg,#ffe27a,#ffb300 50%,#ff8a00)':'rgba(255,255,255,.14)')+';color:'+(x.vpa===sel?'#241040':'#fff')+';font-weight:'+(x.vpa===sel?'700':'400')+';border-radius:999px;padding:6px 10px;font-size:13px">'+esc(x.label)+(x.builtin?'':' <span data-del="'+i+'" style="color:#ff4d6d;font-weight:700">x</span>')+'</button>';
   });
   h+='</div>';
   if(opts.allowAdd){
-   h+='<div style="display:flex;gap:6px;margin-bottom:10px"><input id="uq-newvpa" placeholder="name@bank" style="flex:1;padding:8px;border:1px solid #bbb;border-radius:8px;font-size:14px"><button id="uq-add" style="padding:8px 12px;border-radius:8px;border:1px solid #1faa55;background:#1faa55;color:#fff">'+esc(s.add)+'</button></div>';
+   h+='<div style="display:flex;gap:6px;margin-bottom:10px"><input id="uq-newvpa" placeholder="name@bank" style="flex:1;padding:8px;border:1px solid #c9a6ff;border-radius:8px;font-size:14px"><button id="uq-add" style="padding:8px 12px;border-radius:8px;border:0;background:linear-gradient(180deg,#ff7aa8,#ff3d71 50%,#e0175c);color:#fff;font-weight:700;box-shadow:0 3px 10px rgba(0,0,0,.3),inset 0 1px 0 rgba(255,255,255,.55)">'+esc(s.add)+'</button></div>';
   }
-  h+='<label style="font-size:13px;font-weight:600">'+esc(s.name)+'</label><input id="uq-name" value="'+esc(curNm)+'" style="width:100%;box-sizing:border-box;padding:8px;border:1px solid #bbb;border-radius:8px;margin:6px 0 10px;font-size:14px">';
-  h+='<label style="font-size:13px;font-weight:600">'+esc(s.amount)+'</label><input id="uq-am" type="number" min="1" step="any" inputmode="decimal" value="'+esc(curAm)+'" style="width:100%;box-sizing:border-box;padding:10px;border:1px solid #bbb;border-radius:8px;margin:6px 0 10px;font-size:18px">';
-  h+='<label style="font-size:13px;font-weight:600">'+esc(s.note)+'</label><input id="uq-tn" value="'+esc(curTn)+'" style="width:100%;box-sizing:border-box;padding:8px;border:1px solid #bbb;border-radius:8px;margin:6px 0 12px;font-size:14px">';
-  h+='<button id="uq-gen" style="width:100%;padding:12px;border:0;border-radius:10px;background:#06070a;color:#d4af37;font-weight:800;font-size:16px">'+esc(s.gen)+'</button>';
-  h+='<div id="uq-err" style="color:#a33;font-size:13px;margin-top:6px"></div>';
+  h+='<label style="font-size:13px;font-weight:600">'+esc(s.name)+'</label><input id="uq-name" value="'+esc(curNm)+'" style="width:100%;box-sizing:border-box;padding:8px;border:1px solid #c9a6ff;border-radius:8px;margin:6px 0 10px;font-size:14px">';
+  h+='<label style="font-size:13px;font-weight:600">'+esc(s.amount)+'</label><input id="uq-am" type="number" min="1" step="any" inputmode="decimal" value="'+esc(curAm)+'" style="width:100%;box-sizing:border-box;padding:10px;border:1px solid #c9a6ff;border-radius:8px;margin:6px 0 10px;font-size:18px">';
+  h+='<label style="font-size:13px;font-weight:600">'+esc(s.note)+'</label><input id="uq-tn" value="'+esc(curTn)+'" style="width:100%;box-sizing:border-box;padding:8px;border:1px solid #c9a6ff;border-radius:8px;margin:6px 0 12px;font-size:14px">';
+  h+='<button id="uq-gen" style="width:100%;padding:12px;border:0;border-radius:10px;background:linear-gradient(180deg,#ffe27a 0%,#ffb300 48%,#ff7a00 100%);color:#241040;font-weight:800;font-size:16px;box-shadow:0 4px 14px rgba(0,0,0,.4),inset 0 1px 0 rgba(255,255,255,.75)">'+esc(s.gen)+'</button>';
+  h+='<div id="uq-err" style="color:#ff9eb0;font-size:13px;margin-top:6px"></div>';
   h+='<div id="uq-out" style="display:none;margin-top:14px;text-align:center">'
    +'<div style="font-size:13px;margin-bottom:8px">'+esc(s.scan)+'</div>'
-   +'<canvas id="uq-qr" style="width:240px;height:240px;border:1px solid #ddd;border-radius:8px"></canvas>'
-   +'<div id="uq-link" style="word-break:break-all;font-size:12px;background:#fff;border:1px solid #ddd;border-radius:8px;padding:8px;margin:10px 0;text-align:left"></div>'
-   +'<div style="display:flex;gap:6px"><button id="uq-copy" style="flex:1;padding:10px;border-radius:8px;border:1px solid #333;background:#fff">'+esc(s.copy)+'</button>'
+   +'<canvas id="uq-qr" style="width:240px;height:240px;border:3px solid #ffd54a;border-radius:12px;background:#fff;box-shadow:0 4px 16px rgba(0,0,0,.4)"></canvas>'
+   +'<div id="uq-link" style="word-break:break-all;font-size:12px;background:#fff;border:2px solid #c9a6ff;border-radius:8px;padding:8px;margin:10px 0;text-align:left;color:#222"></div>'
+   +'<div style="display:flex;gap:6px"><button id="uq-copy" style="flex:1;padding:10px;border-radius:8px;border:2px solid #c9a6ff;background:rgba(255,255,255,.92);color:#4a0f6e;font-weight:700">'+esc(s.copy)+'</button>'
    +'<button id="uq-share" style="flex:1;padding:10px;border-radius:8px;border:1px solid #333;background:#fff">'+esc(s.share)+'</button>'
-   +'<a id="uq-open" href="#" style="flex:1;padding:10px;border-radius:8px;background:#1faa55;color:#fff;text-decoration:none;text-align:center">'+esc(s.open)+'</a></div>'
-   +'<div style="font-size:12px;color:#555;margin-top:10px">'+esc(s.editwarn)+'</div>'
+   +'<a id="uq-open" href="#" style="flex:1;padding:10px;border-radius:8px;background:linear-gradient(180deg,#8a6cff,#5a2dd6 55%,#4a1ec0);color:#fff;font-weight:700;text-decoration:none;text-align:center;box-shadow:0 3px 10px rgba(0,0,0,.3),inset 0 1px 0 rgba(255,255,255,.5)">'+esc(s.open)+'</a></div>'
+   +'<div style="font-size:12px;color:#ffd7ec;margin-top:10px">'+esc(s.editwarn)+'</div>'
    +'</div>';
-  h+='<div style="font-size:11px;color:#777;margin-top:12px">'+esc(s.saved)+'</div>';
+  h+='<div style="font-size:11px;color:rgba(255,255,255,.65);margin-top:12px">'+esc(s.saved)+'</div>';
   el.innerHTML=h;
   el.querySelectorAll('.uq-chip').forEach(function(b){
    b.addEventListener('click',function(ev){
@@ -136,6 +142,7 @@ function mount(el,opts){
 }
 return{mount:mount,buildLink:buildLink,STR:STR};
 })();
+
 </script>
 <script>
 UPIQR.mount(document.getElementById('app'),{
@@ -145,4 +152,6 @@ UPIQR.mount(document.getElementById('app'),{
  langToggle:true,
  allowAdd:true
 });
+if('serviceWorker' in navigator){navigator.serviceWorker.register('upi-qr-sw.js').catch(function(){})}
 </script>
+</body></html>
