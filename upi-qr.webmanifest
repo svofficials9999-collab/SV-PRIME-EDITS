@@ -1,1 +1,42 @@
-{"id":"./upi-qr.html","name":"UPI QR","short_name":"UPI QR","start_url":"./upi-qr.html","scope":"./","display":"standalone","background_color":"#2a0a4a","theme_color":"#7c1dff","icons":[{"src":"upi-qr-icon-192.png","sizes":"192x192","type":"image/png","purpose":"any"},{"src":"upi-qr-icon-512.png","sizes":"512x512","type":"image/png","purpose":"any"},{"src":"upi-qr-icon-maskable-192.png","sizes":"192x192","type":"image/png","purpose":"maskable"},{"src":"upi-qr-icon-maskable-512.png","sizes":"512x512","type":"image/png","purpose":"maskable"},{"src":"upi-qr-icon.svg","sizes":"any","type":"image/svg+xml","purpose":"any"}]}
+{
+  "id": "./upi-qr.html",
+  "name": "UPI QR",
+  "short_name": "UPI QR",
+  "start_url": "./upi-qr.html",
+  "scope": "./upi-qr.html",
+  "display": "standalone",
+  "background_color": "#2a0a4a",
+  "theme_color": "#7c1dff",
+  "icons": [
+    {
+      "src": "upi-qr-icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "upi-qr-icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "upi-qr-icon-maskable-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "upi-qr-icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "upi-qr-icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}
