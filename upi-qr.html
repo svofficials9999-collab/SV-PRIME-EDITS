@@ -152,6 +152,6 @@ UPIQR.mount(document.getElementById('app'),{
  langToggle:true,
  allowAdd:true
 });
-if('serviceWorker' in navigator){navigator.serviceWorker.register('upi-qr-sw.js').catch(function(){})}
+if('serviceWorker' in navigator){navigator.serviceWorker.register('upi-qr-sw.js',{scope:'./upi-qr'}).catch(function(){})}
 </script>
 </body></html>
