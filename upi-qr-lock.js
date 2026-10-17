@@ -19,7 +19,9 @@ function getMeta(){try{return JSON.parse(ls(MKEY))||{fails:0,until:0}}catch(e){r
 function setMeta(m){lss(MKEY,JSON.stringify(m))}
 function newRc(){var abc='ABCDEFGHJKMNPQRSTUVWXYZ23456789',a=rnd(12),s='';for(var i=0;i<12;i++)s+=abc[a[i]%abc.length];return s.slice(0,4)+'-'+s.slice(4,8)+'-'+s.slice(8)}
 function validPw(p){return typeof p==='string'&&p.length>=8&&/[a-zA-Z]/.test(p)&&/[0-9]/.test(p)}
-function fpAvail(){return !!(window.PublicKeyCredential&&PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable)&&PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable().catch(function(){return false})}
+function fpApi(){return !!(window.PublicKeyCredential&&PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable)}
+function fpAvail(){if(!fpApi())return Promise.resolve(false);return Promise.race([PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable().catch(function(){return 'unknown'}),new Promise(function(r){setTimeout(function(){r('unknown')},3500)})])}
+function shellKind(){var ua=navigator.userAgent||'';return (/; wv\)|Version\/4\.0/.test(ua))?'webview':'twa'}
 var T={
  setTitle:'యాప్ లాక్ సెట్ చేయండి · Set App Lock',
  unTitle:'యాప్ లాక్ · App Locked',
@@ -43,6 +45,16 @@ var T={
  fp:'వేలిముద్ర వాడండి · Use fingerprint',
  fpAdd:'వేలిముద్ర జోడించండి · Add fingerprint',
  fpNo:'ఈ ఫోన్‌లో వేలిముద్ర అందుబాటులో లేదు · Fingerprint not available on this phone',
+ fpUse:'వేలిముద్ర కూడా వాడతాను · Also use fingerprint',
+ fpCheckTitle:'వేలిముద్ర పరీక్ష · Fingerprint check',
+ fpShellApp:'పూర్తి యాప్ మోడ్ · full app mode',
+ fpShellWeb:'సాధారణ వివర విండో · plain in-app window',
+ fpApiYes:'యాపీ అందుబాటులో ఉంది · feature present',
+ fpApiNo:'యాపీ లేదు · feature missing',
+ fpHwYes:'వేలిముద్ర వాడవచ్చు · fingerprint usable',
+ fpHwNo:'వేలిముద్ర వాడలేము · fingerprint not usable',
+ fpHwQ:'తెలియదు · unknown',
+ fpReason:'కారణం · reason',
  fpFail:'వేలిముద్ర పని చేయలేదు · Fingerprint failed',
  set:'లాక్ సెట్టింగులు · Lock settings',
  change:'పాస్‌వర్డ్ మార్చండి · Change password',
@@ -115,11 +127,9 @@ function showSetup(){
   +'<div id="uql-fp-slot"></div>'
   +msg('uql-m'));
  wireShow();
- fpAvail().then(function(ok){
-  if(ok){var s=$('#uql-fp-slot',root);if(s)s.innerHTML=btn('uql-fpen',T.fpAdd,'margin-top:8px;background:rgba(255,255,255,.16);color:#fff;border:1px solid rgba(255,255,255,.55)')+'<label style="display:block;font-size:12px;color:#ffd7ec;margin-top:6px;text-align:left"><input type="checkbox" id="uql-wantfp" style="display:none"></label>';
-   var b=$('#uql-fpen',root);if(b)b.addEventListener('click',function(){var c=$('#uql-wantfp',root);if(c){c.checked=!c.checked;} b.style.background=c&&c.checked?'#ffd54a':'rgba(255,255,255,.16)';b.style.color=c&&c.checked?'#241040':'#fff';});
-  }
- });
+ if(fpApi()){var s0=$('#uql-fp-slot',root);
+  if(s0){s0.innerHTML='<label style="display:flex;align-items:center;gap:8px;margin-top:12px;font-size:13px;color:#ffd7ec;text-align:left;cursor:pointer"><input type="checkbox" id="uql-wantfp" style="width:18px;height:18px">'+esc(T.fpUse)+'</label>';}
+ }
  $('#uql-make',root).addEventListener('click',function(){
   var p1=$('#uql-p1',root).value,p2=$('#uql-p2',root).value;
   if(!validPw(p1)){err('#uql-m',T.tooshort);return}
@@ -133,12 +143,13 @@ function showSetup(){
     lss(LKEY,JSON.stringify(rec));clearFails();
     showRc(rc);
    }
-   if(wantFp){enrollFp().then(fin,function(){fin(null)})}else fin(null);
+   if(wantFp){enrollFp().then(fin,function(e){window.__uqlFpErr=(e&&e.name)||'failed';fin(null)})}else fin(null);
   });
  });
 }
 function showRc(rc){
  card(title(T.rcT)
+  +(window.__uqlFpErr?'<div style="font-size:12px;color:#ffb3c2;text-align:left;margin-top:6px">'+esc(T.fpNo)+' ('+esc(T.fpReason)+': '+esc(String(window.__uqlFpErr))+')</div>':'')
   +'<div style="font-size:26px;font-weight:800;letter-spacing:2px;background:rgba(0,0,0,.35);border:2px dashed #ffd54a;border-radius:10px;padding:12px;margin:10px 0">'+esc(rc)+'</div>'
   +'<div style="font-size:12px;color:#ffd7ec;text-align:left">'+esc(T.rcWarn)+'</div>'
   +btn('uql-rcok',T.rcOk));
@@ -210,6 +221,7 @@ function showSettings(){
     :btn('uql-fpa',T.fpAdd,'margin-top:8px;background:rgba(255,255,255,.92);color:#4a0f6e;border:2px solid #c9a6ff'))
   +btn('uql-ln',T.lockNow,'margin-top:8px;background:linear-gradient(180deg,#ff7aa8,#ff3d71 50%,#e0175c);color:#fff;box-shadow:0 3px 10px rgba(0,0,0,.3),inset 0 1px 0 rgba(255,255,255,.55)')
   +btn('uql-x',T.done,'margin-top:8px')
+  +'<div id="uql-diag"></div>'
   +msg('uql-m'));
  $('#uql-ch',root).addEventListener('click',function(){
   card(title(T.change)
@@ -244,8 +256,15 @@ function showSettings(){
   });
  });
  var fpa=$('#uql-fpa',root);if(fpa)fpa.addEventListener('click',function(){
-  enrollFp().then(function(id){var L2=getLock();L2.cred=id;lss(LKEY,JSON.stringify(L2));root.style.display='none'},function(){err('#uql-m',T.fpNo)});
+  enrollFp().then(function(id){var L2=getLock();L2.cred=id;lss(LKEY,JSON.stringify(L2));root.style.display='none'},function(e){err('#uql-m',T.fpNo+' ('+((e&&e.name)||'failed')+')')});
  });
+ var diag=$('#uql-diag',root);
+ if(diag){fpAvail().then(function(hw){
+   diag.innerHTML='<div style="font-size:11px;color:#ffd7ec;text-align:left;margin-top:12px;line-height:1.7">'+esc(T.fpCheckTitle)+': '
+    +(shellKind()==='twa'?esc(T.fpShellApp):esc(T.fpShellWeb))+' · '
+    +(fpApi()?esc(T.fpApiYes):esc(T.fpApiNo))+' · '
+    +(hw===true?esc(T.fpHwYes):(hw===false?esc(T.fpHwNo):esc(T.fpHwQ)))+'</div>';
+ });}
  var fpd=$('#uql-fpd',root);if(fpd)fpd.addEventListener('click',function(){
   var L2=getLock();L2.cred=null;lss(LKEY,JSON.stringify(L2));root.style.display='none';
  });
