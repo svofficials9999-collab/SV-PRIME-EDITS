@@ -3,7 +3,8 @@
 <style>body{margin:0;background:#e9e4d6;padding:12px}</style></head>
 <body>
 <div id="app"></div>
-<script>/**
+<script>
+/**
  * Minified by jsDelivr using Terser v5.37.0.
  * Original file: /npm/qrcode-generator@1.4.4/qrcode.js
  *
@@ -50,9 +51,13 @@ function mount(el,opts){
  var sel=store.getSel();
  if(!vpas.some(function(x){return x.vpa===sel}))sel=vpas[0]?vpas[0].vpa:'';
  var name=opts.name||'';
+ var curNm=name,curAm='',curTn='',curLink='';
  function t(){return STR[lang]}
  function render(){
   var s=t();
+  var o1=el.querySelector('#uq-am');if(o1)curAm=o1.value;
+  var o2=el.querySelector('#uq-tn');if(o2)curTn=o2.value;
+  var o3=el.querySelector('#uq-name');if(o3)curNm=o3.value;
   el.innerHTML='';
   el.style.cssText='font-family:system-ui,-apple-system,sans-serif;max-width:480px;margin:0 auto;padding:14px;background:#f6f1e3;color:#222;border-radius:12px';
   var h='<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">'
@@ -67,9 +72,9 @@ function mount(el,opts){
   if(opts.allowAdd){
    h+='<div style="display:flex;gap:6px;margin-bottom:10px"><input id="uq-newvpa" placeholder="name@bank" style="flex:1;padding:8px;border:1px solid #bbb;border-radius:8px;font-size:14px"><button id="uq-add" style="padding:8px 12px;border-radius:8px;border:1px solid #1faa55;background:#1faa55;color:#fff">'+esc(s.add)+'</button></div>';
   }
-  h+='<label style="font-size:13px;font-weight:600">'+esc(s.name)+'</label><input id="uq-name" value="'+esc(name)+'" style="width:100%;box-sizing:border-box;padding:8px;border:1px solid #bbb;border-radius:8px;margin:6px 0 10px;font-size:14px">';
-  h+='<label style="font-size:13px;font-weight:600">'+esc(s.amount)+'</label><input id="uq-am" type="number" min="1" step="any" inputmode="decimal" style="width:100%;box-sizing:border-box;padding:10px;border:1px solid #bbb;border-radius:8px;margin:6px 0 10px;font-size:18px">';
-  h+='<label style="font-size:13px;font-weight:600">'+esc(s.note)+'</label><input id="uq-tn" style="width:100%;box-sizing:border-box;padding:8px;border:1px solid #bbb;border-radius:8px;margin:6px 0 12px;font-size:14px">';
+  h+='<label style="font-size:13px;font-weight:600">'+esc(s.name)+'</label><input id="uq-name" value="'+esc(curNm)+'" style="width:100%;box-sizing:border-box;padding:8px;border:1px solid #bbb;border-radius:8px;margin:6px 0 10px;font-size:14px">';
+  h+='<label style="font-size:13px;font-weight:600">'+esc(s.amount)+'</label><input id="uq-am" type="number" min="1" step="any" inputmode="decimal" value="'+esc(curAm)+'" style="width:100%;box-sizing:border-box;padding:10px;border:1px solid #bbb;border-radius:8px;margin:6px 0 10px;font-size:18px">';
+  h+='<label style="font-size:13px;font-weight:600">'+esc(s.note)+'</label><input id="uq-tn" value="'+esc(curTn)+'" style="width:100%;box-sizing:border-box;padding:8px;border:1px solid #bbb;border-radius:8px;margin:6px 0 12px;font-size:14px">';
   h+='<button id="uq-gen" style="width:100%;padding:12px;border:0;border-radius:10px;background:#06070a;color:#d4af37;font-weight:800;font-size:16px">'+esc(s.gen)+'</button>';
   h+='<div id="uq-err" style="color:#a33;font-size:13px;margin-top:6px"></div>';
   h+='<div id="uq-out" style="display:none;margin-top:14px;text-align:center">'
@@ -104,14 +109,15 @@ function mount(el,opts){
    store.set(vpas.filter(function(x){return!x.builtin}).map(function(x){return{vpa:x.vpa,label:x.label}}));
    sel=v;store.setSel(sel);render();
   });
-  el.querySelector('#uq-gen').addEventListener('click',function(){
+  function gen(){
    var am=el.querySelector('#uq-am').value.trim();
    var nm=el.querySelector('#uq-name').value.trim();
    var tn=el.querySelector('#uq-tn').value.trim();
    var err=el.querySelector('#uq-err');
-   if(!sel||!validVpa(sel)||!am||!(+am>0)){err.textContent=t().invalid;return}
+   if(!sel||!validVpa(sel)||!am||!(+am>0)){err.textContent=t().invalid;curLink='';return}
    err.textContent='';
    var link=buildLink(sel,nm,am,tn);
+   curLink=link;
    var out=el.querySelector('#uq-out');out.style.display='block';
    drawQR(el.querySelector('#uq-qr'),link);
    el.querySelector('#uq-link').textContent=link;
@@ -121,7 +127,9 @@ function mount(el,opts){
     if(navigator.share){navigator.share({title:t().title,text:link}).catch(function(){})}
     else if(navigator.clipboard){navigator.clipboard.writeText(link)}
    };
-  });
+  }
+  el.querySelector('#uq-gen').addEventListener('click',gen);
+  if(curLink)gen();
  }
  render();
  return{link:buildLink};
@@ -138,4 +146,3 @@ UPIQR.mount(document.getElementById('app'),{
  allowAdd:true
 });
 </script>
-</body></html>
