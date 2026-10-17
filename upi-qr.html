@@ -152,6 +152,6 @@ UPIQR.mount(document.getElementById('app'),{
  langToggle:true,
  allowAdd:true
 });
-if('serviceWorker' in navigator){navigator.serviceWorker.register('upi-qr-sw.js',{scope:'./upi-qr'}).catch(function(){})}
+if('serviceWorker' in navigator){navigator.serviceWorker.register('upi-qr-sw.js',{scope:'./upi-qr.html',updateViaCache:'none'}).catch(function(){});navigator.serviceWorker.getRegistrations().then(function(rs){rs.forEach(function(r){if(!/upi-qr\.html$/.test(r.scope)&&/upi-qr/.test(r.scope))r.unregister()})})}
 </script>
 </body></html>
