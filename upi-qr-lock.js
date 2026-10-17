@@ -11,10 +11,10 @@ function rnd(n){var a=new Uint8Array(n);crypto.getRandomValues(a);return a}
 function hex(a){return Array.prototype.map.call(a,function(b){return('0'+b.toString(16)).slice(-2)}).join('')}
 function b64u(a){return btoa(String.fromCharCode.apply(null,new Uint8Array(a))).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'')}
 function unb64(s){s=s.replace(/-/g,'+').replace(/_/g,'/');while(s.length%4)s+='=';var b=atob(s),a=new Uint8Array(b.length);for(var i=0;i<b.length;i++)a[i]=b.charCodeAt(i);return a.buffer}
-function sha(s){return crypto.subtle.digest('SHA-256',new TextEncoder().encode(s)).then(hex)}
+function sha(s){return crypto.subtle.digest('SHA-256',new TextEncoder().encode(s)).then(function(b){return hex(new Uint8Array(b))})}
 function makeHash(salt,pw){return sha(salt+'::'+pw)}
 function eqConst(a,b){if(a.length!==b.length)return false;var d=0;for(var i=0;i<a.length;i++)d|=a.charCodeAt(i)^b.charCodeAt(i);return d===0}
-function getLock(){try{return JSON.parse(ls(LKEY))}catch(e){return null}}
+function getLock(){try{var L=JSON.parse(ls(LKEY));if(L&&typeof L.hash==='string'&&L.hash.length===64&&typeof L.rcHash==='string'&&L.rcHash.length===64)return L;try{localStorage.removeItem(LKEY)}catch(e){}return null}catch(e){return null}}
 function getMeta(){try{return JSON.parse(ls(MKEY))||{fails:0,until:0}}catch(e){return{fails:0,until:0}}}
 function setMeta(m){lss(MKEY,JSON.stringify(m))}
 function newRc(){var abc='ABCDEFGHJKMNPQRSTUVWXYZ23456789',a=rnd(12),s='';for(var i=0;i<12;i++)s+=abc[a[i]%abc.length];return s.slice(0,4)+'-'+s.slice(4,8)+'-'+s.slice(8)}
