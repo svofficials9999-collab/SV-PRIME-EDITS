@@ -26,6 +26,7 @@ var T={
  pw:'పాస్‌వర్డ్ (కనీసం 8, అక్షరం+అంకె) · Password (min 8, letter+number)',
  pw2:'మళ్లీ టైప్ చేయండి · Type again',
  cur:'ప్రస్తుత పాస్‌వర్డ్ · Current password',
+ enter:'పాస్‌వర్డ్ · Password',
  newp:'కొత్త పాస్‌వర్డ్ · New password',
  show:'చూపు · Show',hide:'దాచు · Hide',
  save:'సేవ్ · Save',unlock:'అన్‌లాక్ · Unlock',
@@ -146,7 +147,7 @@ function showRc(rc){
 function showUnlock(){
  var L=getLock();
  card(title(T.unTitle)
-  +pwField('uql-pw',T.cur)
+  +pwField('uql-pw',T.enter)
   +btn('uql-go',T.unlock)
   +(L&&L.cred?btn('uql-fp',T.fp,'margin-top:8px;background:linear-gradient(180deg,#8a6cff,#5a2dd6 55%,#4a1ec0);color:#fff;box-shadow:0 3px 10px rgba(0,0,0,.3),inset 0 1px 0 rgba(255,255,255,.5)'):'')
   +'<div style="margin-top:10px"><a href="#" id="uql-forgot" style="color:#ffd7ec;font-size:12px">'+esc(T.forgot)+'</a></div>'
