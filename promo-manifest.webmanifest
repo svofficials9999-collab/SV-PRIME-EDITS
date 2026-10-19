@@ -1,0 +1,37 @@
+{
+  "id": "./promo-studio.html",
+  "name": "SV PRIME EDITS - Promo Video Studio",
+  "short_name": "Promo Studio",
+  "start_url": "./promo-studio.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#06070a",
+  "theme_color": "#06070a",
+  "description": "Promo videos with live previews and WhatsApp order requests",
+  "icons": [
+    {
+      "src": "poster-icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "poster-icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "poster-icon-maskable-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "poster-icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}
