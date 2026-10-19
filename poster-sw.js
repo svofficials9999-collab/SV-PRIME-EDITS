@@ -1,8 +1,8 @@
 'use strict';
-const CACHE='sv-poster-v50-purge-all';
-const FILES=['./poster-maker.html','./poster-manifest.webmanifest','./catalogue-feature.js?v=1'];
+const CACHE='sv-poster-v51-pwa-icons';
+const FILES=['./poster-maker.html','./poster-manifest.webmanifest','./catalogue-feature.js?v=1','./poster-icon-192.png','./poster-icon-512.png','./poster-icon-maskable-192.png','./poster-icon-maskable-512.png'];
 self.addEventListener('install',e=>{e.waitUntil(caches.open(CACHE).then(c=>c.addAll(FILES)).then(()=>self.skipWaiting()));});
-self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k!==CACHE).map(k=>caches.delete(k)))).then(()=>self.clients.claim()));});
+self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k.startsWith('sv-poster-')&&k!==CACHE).map(k=>caches.delete(k)))).then(()=>self.clients.claim()));});
 self.addEventListener('fetch',e=>{const u=new URL(e.request.url);if(e.request.method!=='GET'||u.origin!==self.location.origin||!FILES.some(f=>new URL(f,self.location.href).pathname===u.pathname))return;boundedStartup(e,fetch(e.request,{cache:'reload'}).then(r=>{if(r.ok){const clone=r.clone();caches.open(CACHE).then(c=>c.put(e.request,clone));}return r;}).catch(()=>caches.match(e.request,{ignoreSearch:true})));});
 
 // Preserve fast network freshness; use this app's saved page after 1.2s if the connection stalls.
